@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://softvelum.com/player/releases/sldp-v2.17.5.min.js"></script>
+    <style>
+      body {
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+      }
+      .grid {
+        display: grid;
+        /* border-style: solid; */
+        /* border-color: red; */
+        grid-template-columns: repeat(4, 1fr);
+        /* grid-template-rows: repeat(3, 1fr); */
+        /* grid-gap: 10px; */
+        /* width: 100vw; */
+        /* height: 100vh; */
+      }
+      .player-wrp {
+        /* border: 1px solid blue; */
+        /* width: 100%; */
+        /* height: 200px; */
+      }
+
+      @media screen and (max-width: 800px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media screen and (max-width: 980px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media screen and (max-width: 580px) {
+        .grid {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <div id="player-wrp-1" class="player-wrp"></div>
+      <div id="player-wrp-2" class="player-wrp"></div>
+      <div id="player-wrp-3" class="player-wrp"></div>
+      <div id="player-wrp-4" class="player-wrp"></div>
+      <div id="player-wrp-5" class="player-wrp"></div>
+      <div id="player-wrp-6" class="player-wrp"></div>
+      <div id="player-wrp-7" class="player-wrp"></div>
+      <div id="player-wrp-8" class="player-wrp"></div>
+      <div id="player-wrp-9" class="player-wrp"></div>
+      <div id="player-wrp-10" class="player-wrp"></div>
+      <div id="player-wrp-11" class="player-wrp"></div>
+      <div id="player-wrp-12" class="player-wrp"></div>
+      <div id="player-wrp-13" class="player-wrp"></div>
+      <div id="player-wrp-14" class="player-wrp"></div>
+    </div>
+
+    <!-- Insert your SLDP streams URLs here -->
+    <script type="text/javascript">
+      var sldpPlayers = [];
+      var urls = ["ws://broadcast.za.painteddog.info:8081/ABR/EWT-Wilddogboma-04", "ws://ingest.za.painteddog.info:8081/live/Kwenga_Water_Hole", "ws://ingest.za.painteddog.info:8081/live/Pridelands_Critter_Cam", "ws://ingest.za.painteddog.info:8081/live/Pridelands_CritterTop", "ws://ingest.za.painteddog.info:8081/live/Pridelands_ElephantCam1", "ws://ingest.za.painteddog.info:8081/live/Pridelands_ElephantCam2", "ws://ingest.za.painteddog.info:8081/live/Pridelands_ElephantCam3", "ws://broadcast.za.painteddog.info:8081/ABR/Pridelands_HyenaDen", "ws://broadcast.za.painteddog.info:8081/ABR/Rietspruit_Boskamp", "ws://ingest.za.painteddog.info:8081/live/Rogge_Cloof", "ws://ingest.za.painteddog.info:8081/live/Simonstown_Penguin_01", "ws://ingest.za.painteddog.info:8081/live/Thornybush_Saviti", "ws://ingest.za.painteddog.info:8081/live/EWT-Wilddogboma-01_LQ"];
+
+      function startPlayers() {
+        var button = document.getElementById("start");
+        // button.style.display = 'none';
+
+        if (sldpPlayers.length > 0) {
+          restartPlayers();
+        } else {
+          doStart();
+        }
+      }
+
+      startPlayers();
+
+      function restartPlayers() {
+        var destroyCnt = 0;
+        for (var i = 0; i < sldpPlayers.length; i++) {
+          sldpPlayers[i].destroy(function () {
+            destroyCnt++;
+            if (destroyCnt === sldpPlayers.length) {
+              sldpPlayers = [];
+              doStart();
+            }
+          });
+        }
+      }
+
+      function doStart() {
+        for (var i = 0; i < 12; i++) {
+          var player = SLDP.init({
+            container: "player-wrp-" + (i + 1),
+            stream_url: urls[i],
+            buffering: 1000,
+            autoplay: true,
+            muted: false,
+            width: "parent",
+            vu_meter: { type: "input", mode: "peak", container: "vu-meter-" + (i + 1), rate: 10 },
+          });
+          sldpPlayers[i] = player;
+        }
+      }
+    </script>
+  </body>
+</html>
